@@ -8,23 +8,29 @@ import java.io.IOException;
 public class Cracker {
     public static void main(String[] args) {
         File file = new File("pdf/4024574.pdf");
+        System.out.println(crack(file, 4));
+    }
 
-        for(int i = 0; i < 10000; i++) {
+    private static String crack(File file, int pwdLength) {
+//        for(int i = 0; i < 10000; i++) {
+        for(int i = 0; i < (int) Math.pow(10, pwdLength); i++) {
             try {
-                String pwd = pad(i);
-//                PDDocument pdf = Loader.loadPDF(file, pwd);
+//                String pwd = pad(i);
+                String pwd = pad(i, pwdLength);
                 Loader.loadPDF(file, pwd);
-                System.out.println(pwd);
-                break;
+//                System.out.println(pwd);
+                return pwd;
             }
             catch(IOException ignored) {}
         }
+
+        return null;
     }
 
-//    private static String pad(int number, int pwdLength) { // Mine was 4 digits, so I hardcoded
-    private static String pad(int number) {
+//    private static String pad(int number) {
+    private static String pad(int number, int pwdLength) {
         StringBuilder builder = new StringBuilder(String.valueOf(number));
-        for(int i = 4 - builder.length(); i > 0; i--) {
+        for(int i = pwdLength - builder.length(); i > 0; i--) {
             builder.insert(0, "0");
         }
         return builder.toString();
